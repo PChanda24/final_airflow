@@ -25,20 +25,20 @@ dag = DAG(
     schedule_interval='*/1 * * * *',  # Every minute
     catchup=False,  # Disable catchup
     tags=['example'],
-    owner_links={"Ramin Mohammadi": "https://github.com/raminmohammadi/MLOps/"}
+    owner_links={"Prabhat Chanda": "https://github.com/PChanda24"}
 )
 
 # Task definitions
 owner_task = BashOperator(
     task_id="task_using_linked_owner",
     bash_command="echo 1",
-    owner="Ramin Mohammadi",
+    owner="Prabhat Chanda",
     dag=dag
 )
 
 send_email = EmailOperator(
     task_id='send_email',
-    to='rey.mhmmd@gmail.com',
+    to='prabhchanda@gmail.com',
     subject='Notification from Airflow',
     html_content='<p>This is a notification email sent from Airflow.</p>',
     dag=dag
@@ -84,7 +84,7 @@ load_model_task = PythonOperator(
     dag=dag
 )
 
-TriggerDagRunOperator = TriggerDagRunOperator(
+triggerdag = TriggerDagRunOperator(
     task_id='my_trigger_task',
     trigger_rule=TriggerRule.ALL_DONE,
     trigger_dag_id='Airflow_Lab2_Flask',
@@ -92,4 +92,4 @@ TriggerDagRunOperator = TriggerDagRunOperator(
 )
 
 # Set task dependencies
-owner_task >> load_data_task >> data_preprocessing_task >> separate_data_outputs_task >> build_save_model_task >> load_model_task >> send_email >> TriggerDagRunOperator
+owner_task >> load_data_task >> data_preprocessing_task >> separate_data_outputs_task >> build_save_model_task >> load_model_task >> send_email >> triggerdag
