@@ -121,6 +121,20 @@ services:
     command: webserver
     ports:
       - "8080:8080"
+    environment:
+      <<: *airflow-common-env
+      # Existing configuration
+      AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+      AIRFLOW__CORE__EXECUTOR: CeleryExecutor
+
+      # Add SMTP settings here
+      AIRFLOW__SMTP__SMTP_HOST: smtp.gmail.com
+      AIRFLOW__SMTP__SMTP_STARTTLS: 'true'  # Set to 'true' if using TLS
+      AIRFLOW__SMTP__SMTP_SSL: 'false'  # Set to 'true' if using SSL
+      AIRFLOW__SMTP__SMTP_USER: prabhchanda@gmail.com
+      AIRFLOW__SMTP__SMTP_PASSWORD: gdie ptkn mbih fwlm
+      AIRFLOW__SMTP__SMTP_PORT: 587  # For TLS (use 465 for SSL)
+      AIRFLOW__SMTP__SMTP_MAIL_FROM: prabhchanda@gmail.com
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
       interval: 30s
